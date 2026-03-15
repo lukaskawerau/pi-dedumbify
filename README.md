@@ -1,47 +1,33 @@
-# dedumbify
+# pi-dedumbify
 
-pi extension for spaced repetition of programming concepts via executable code cards.
+Pi extension for executable spaced repetition with FSRS scheduling.
 
-## Status
+Write real TypeScript or Python code, run tests in an isolated temp workspace, then rate the review to schedule the next interval.
 
-Core MVP loop mostly in place.
+## Install in pi
 
-Implemented now:
+From npm:
 
-- extension commands + shortcut scaffold
-- centered overlay review modal
-- global card root + DB path resolution
-- card discovery
-- `card.yaml` parsing
-- structural validation
-- duplicate id detection
-- content hashing
-- SQLite schema + persistence
-- DB-backed deck stats
-- `/sr` auto-sync before modal open
-- TypeScript grading via Vitest in temp dirs
-- Python grading via `uv` + Pytest in temp dirs
+```bash
+pi install npm:pi-dedumbify
+```
+
+From GitHub:
+
+```bash
+pi install git:github.com/lukaskawerau/pi-dedumbify
+```
+
+Then restart pi or run `/reload`.
+
+## What it does
+
+- centered review overlay inside pi
+- user-authored global card deck
+- TypeScript cards graded via Vitest
+- Python cards graded via `uv` + Pytest
 - FSRS scheduling via `ts-fsrs`
-- automatic review persistence on rating
-- `/sr-validate` now runs solution tests for valid cards
-- Vitest coverage for discovery, validation, DB sync, grading, and review persistence
-
-Still pending:
-
-- polish for result rendering and navigation
-- richer review session stats
-- nicer reveal-solution flow
-
-## MVP
-
-- pi extension with centered overlay modal
-- global, user-authored card deck
-- code cards only
-- TypeScript + Python
-- grading via Vitest and Pytest
-- FSRS scheduling in SQLite
-- highlighted prompt/starter/solution previews
-- plain answer editor buffer
+- automatic review persistence in SQLite
 
 ## Commands
 
@@ -49,3 +35,99 @@ Still pending:
 - `/sr-sync` — force a card rescan + DB sync
 - `/sr-stats` — sync cards, then show DB-backed deck stats
 - `/sr-validate` — structural validation + run solution tests without writing reviews
+
+## Keyboard shortcuts in the modal
+
+- `tab` / `shift+tab` — switch panes
+- `ctrl+r` — run tests
+- `ctrl+s` — toggle starter/solution
+- `1` / `2` / `3` / `4` — Again / Hard / Good / Easy
+- `esc` — close
+
+## Card location
+
+Cards live under:
+
+```text
+~/.pi/agent/spaced-rep/cards/
+```
+
+DB lives at:
+
+```text
+~/.pi/agent/spaced-rep/fsrs.db
+```
+
+## Card format
+
+Each card lives in its own directory.
+
+TypeScript example:
+
+```text
+sum-array-ts/
+  card.yaml
+  prompt.md
+  starter.ts
+  solution.ts
+  tests.ts
+```
+
+Python example:
+
+```text
+factorial-py/
+  card.yaml
+  prompt.md
+  starter.py
+  solution.py
+  tests.py
+```
+
+Minimal `card.yaml`:
+
+```yaml
+id: sum-array-ts
+title: Sum an array of numbers
+language: typescript
+tags:
+  - arrays
+  - iteration
+timeboxSec: 180
+files:
+  prompt: prompt.md
+  starter: starter.ts
+  solution: solution.ts
+  tests: tests.ts
+runner:
+  entry: answer.ts
+```
+
+## Local development
+
+```bash
+cd ~/coding/apps/dedumbify
+npm install
+npm run check
+pi
+```
+
+The repo exposes a project-local extension shim at `.pi/extensions/dedumbify.ts`, so pi auto-discovers it when started from the repo root.
+
+## Status
+
+MVP works.
+
+Implemented:
+
+- card discovery + validation
+- SQLite deck state + review log
+- grading runners for TS and Python
+- FSRS scheduling
+- review modal with answer buffer and autosave on rating
+
+Still rough:
+
+- result rendering polish
+- richer session stats
+- nicer reveal-solution flow

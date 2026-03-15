@@ -1,14 +1,15 @@
 ---
-summary: How to run dedumbify live inside pi
+summary: How to run pi-dedumbify live inside pi
 read_when:
   - testing the extension in pi
   - reloading the project-local extension
   - trying the sample cards
+  - verifying npm or git install behavior
 ---
 
 # Live testing
 
-## Auto-discovery
+## Auto-discovery in this repo
 
 The project exposes a project-local pi extension at:
 
@@ -33,6 +34,20 @@ Inside pi:
 - run `/sr-stats`
 - run `/sr-validate`
 - run `/sr`
+
+## Package install paths
+
+After publish, users can install with:
+
+```bash
+pi install npm:pi-dedumbify
+```
+
+Or directly from GitHub:
+
+```bash
+pi install git:github.com/lukaskawerau/pi-dedumbify
+```
 
 ## Shortcuts
 
