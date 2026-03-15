@@ -22,7 +22,8 @@
     "url": "https://github.com/lukaskawerau/pi-dedumbify/issues"
   },
   "files": [
-    "src",
+    "src/**/*.ts",
+    "!src/**/*.test.ts",
     "README.md",
     "LICENSE"
   ],
